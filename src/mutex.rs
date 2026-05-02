@@ -38,7 +38,7 @@ pub unsafe extern "C" fn pthread_mutex_init(
         ctru_sys::RecursiveLock_Init(lock as _)
     }
 
-    *(lock.offset(39)) = attr as u8;
+    *(lock.offset(39)) = attr_val as u8;
 
     0
 }
