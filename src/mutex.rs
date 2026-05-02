@@ -26,11 +26,15 @@ pub unsafe extern "C" fn pthread_mutex_init(
 ) -> libc::c_int {
     let lock = lock as *mut u8;
 
-    let attr: libc::c_int = *(attr as *const libc::c_int);
+    let attr_val: libc::c_int = if attr.is_null() {
+        libc::PTHREAD_MUTEX_NORMAL
+    } else {
+        *(attr as *const libc::c_int)
+    };
 
-    if attr == libc::PTHREAD_MUTEX_NORMAL {
+    if attr_val == libc::PTHREAD_MUTEX_NORMAL {
         ctru_sys::LightLock_Init(lock as _);
-    } else if attr == libc::PTHREAD_MUTEX_RECURSIVE {
+    } else if attr_val == libc::PTHREAD_MUTEX_RECURSIVE {
         ctru_sys::RecursiveLock_Init(lock as _)
     }
 
